@@ -1,0 +1,9 @@
+**.py[cod]
+/node_modules/
+/src/python/selectize/static/
+.*
+!.gitignore
+!.nycrc
+**.egg-info
+/dist/
+/venv/

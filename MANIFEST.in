@@ -1,0 +1,2 @@
+recursive-include src/python/selectize/static *
+recursive-include src/python/selectize/templates *
