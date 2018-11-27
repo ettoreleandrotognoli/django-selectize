@@ -12,7 +12,7 @@ from .reflection import get_parents
 class SelectizeMixin(object):
     def __init__(self, *args, **kwargs):
         attrs = kwargs.get('attrs', {})
-        attrs['selectize'] = attrs.get('selectize', 'selectize')
+        attrs['selectize'] = attrs.get('selectize', 'eager')
         for k, v in kwargs.pop('selectize', {}).items():
             attrs['selectize-%s' % k] = v
         kwargs['attrs'] = attrs
@@ -48,10 +48,10 @@ class RemoteSelectizeMixin(SelectizeMixin):
             kwargs=url_kwargs
         )
         return cls(
-            href=url,
-            selectize=dict(
-                create=url
-            ),
+            selectize={
+                "create-url": url,
+                "search-url": url
+            },
             attrs=options.get('attrs', {})
         )
 

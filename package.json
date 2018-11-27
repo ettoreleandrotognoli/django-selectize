@@ -42,7 +42,7 @@
   "dependencies": {
     "@types/jquery": "^3.3.22",
     "@types/selectize": "^0.12.33",
-    "jquery": "^3.3.1",
-    "selectize": "^0.12.6"
+    "jquery": "^3.2.1",
+    "selectize": "^0.12.4"
   }
 }

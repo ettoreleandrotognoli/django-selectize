@@ -30,7 +30,7 @@ def get_parent_fields(django_meta: Options):
     parent_fields = filter(not_null_field, filter(fk_field, django_meta.fields))
     relations = {}
     for field in parent_fields:
-        relations[field.name] = field.rel.to
+        relations[field.name] = field.target_field.model
     return relations
 
 

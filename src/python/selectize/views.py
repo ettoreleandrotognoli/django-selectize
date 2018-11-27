@@ -1,8 +1,6 @@
 from django.views import View
 
-from .models import SELECTIZE_ATTR
 from .models import Selectize
-from .reflection import get_parents
 from .strategies import SelectizeCreateStrategy
 from .strategies import SelectizeFilterStrategy
 from .strategies import SelectizeParentsStrategy
@@ -17,10 +15,9 @@ class SelectizeView(View):
     model = None
     selectize = None
 
-    def __init__(self, model, parents=None, selectize: Selectize = None):
+    def __init__(self, model, selectize: Selectize = None):
         self.model = model
-        self.parents = parents if parents else get_parents(model._meta)
-        self.selectize = selectize if selectize else getattr(model, SELECTIZE_ATTR)
+        self.selectize = selectize
 
     def get_manager(self):
         return self.model.objects
@@ -80,11 +77,13 @@ class SelectizeView(View):
 
     def get(self, request, data, *args, **kwargs):
         search_strategy = self.get_search_strategy()
+        render_strategy = self.get_render_strategy()
         result = search_strategy.search(self.get_queryset(), data)
-        return self.get_serialize_strategy().serialize_searched_items(result)
+        return self.get_serialize_strategy().serialize_searched_items(render_strategy, result)
 
     def post(self, request, data, *args, **kwargs):
         create_strategy = self.get_create_strategy()
+        render_strategy = self.get_render_strategy()
         parents = self.get_parents_strategy().get_parents_data(self.get_manager(), request, args, kwargs)
         result = create_strategy.create(self.get_manager(), {**data, **parents})
-        return self.get_serialize_strategy().serialize_created_item(result)
+        return self.get_serialize_strategy().serialize_created_item(render_strategy, result)

@@ -4,6 +4,8 @@ from django import forms
 from django.shortcuts import render
 from django.views import View
 from django.views.decorators import csrf
+from selectize.models import SELECTIZE_ATTR
+from selectize.models import SELECTIZE_DEFAULT
 from . import widgets
 from .reflection import get_parents
 from .views import SelectizeView
@@ -29,7 +31,8 @@ class SelectizeSite(object):
         return url_prefix + ('{}/$'.format(model_id[1]))
 
     def as_view(self, model_id: Tuple[str, str], model):
-        return csrf.csrf_exempt(SelectizeView.as_view(model=model))
+        selectizes = getattr(model, SELECTIZE_ATTR, {})
+        return csrf.csrf_exempt(SelectizeView.as_view(model=model, selectize=selectizes[SELECTIZE_DEFAULT]))
 
     def make_urls(self):
         from django.conf.urls import url
@@ -45,7 +48,7 @@ class SelectizeSite(object):
         for parents in parents_chain:
             for parent_name, parent_model in parents.items():
                 parent_id = tuple(parent_model._meta.label_lower.split('.'))
-                listen_attrs['listen-{}-{}'.format(*parent_id)] = "href selectize-create"
+                listen_attrs['listen-{}-{}'.format(*parent_id)] = "selectize-search-url selectize-create-url"
 
         class PreviewForm(forms.Form):
             prefix = '{}-{}'.format(*model_id)
