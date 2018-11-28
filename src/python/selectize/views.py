@@ -63,9 +63,9 @@ class SelectizeView(View):
     def check_permission(self):
         permission_strategy = self.get_permission_strategy()
         if self.request.method in ('GET',):
-            return permission_strategy.check_search_permission(self.model)
+            return permission_strategy.check_search_permission(self.request.user, self.model)
         elif self.request.method in ('POST',):
-            return permission_strategy.check_create_permission(self.model)
+            return permission_strategy.check_create_permission(self.request.user, self.model)
         raise Exception()
 
     def dispatch(self, request, *args, **kwargs):

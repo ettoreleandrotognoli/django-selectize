@@ -6,6 +6,7 @@ from django.forms.utils import flatatt
 from django.urls import reverse_lazy
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+from .reflection import get_model_id
 from .reflection import get_parents
 
 
@@ -36,7 +37,7 @@ class RemoteSelectizeMixin(SelectizeMixin):
 
     @classmethod
     def from_model(cls, model, **options):
-        model_id = tuple(model._meta.label_lower.split('.'))
+        model_id = get_model_id(model)
         parents_chain = get_parents(model._meta)
         url_kwargs = {}
         for parents in parents_chain:

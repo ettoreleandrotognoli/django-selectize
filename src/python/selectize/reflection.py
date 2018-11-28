@@ -4,12 +4,17 @@ from django.db.models.fields.related import ForeignKey
 from django.db.models.options import Options
 
 
+def get_model_id(model):
+    return tuple(model._meta.label_lower.split('.'))
+
+
 def fk_field(field):
     return isinstance(field, ForeignKey)
 
 
 def not_null_field(field):
     return not field.null
+
 
 def get_reversed_parent_fields(django_meta: Options):
     pass

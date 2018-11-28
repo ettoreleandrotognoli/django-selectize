@@ -1,6 +1,7 @@
 from typing import Dict, Any
 
 from django import forms
+from django.core.exceptions import PermissionDenied
 from django.db.models import QuerySet, Manager
 from django.http import HttpResponse
 
@@ -53,8 +54,18 @@ class SelectizeCreateStrategy(object):
 
 
 class SelectizePermissionStrategy(object):
-    def check_search_permission(self, model):
+    def can_create(self, user, model):
         raise NotImplementedError()
 
-    def check_create_permission(self, model):
+    def can_search(self, user, model):
         raise NotImplementedError()
+
+    def check_search_permission(self, user, model):
+        if self.can_search(user, model):
+            return
+        raise PermissionDenied()
+
+    def check_create_permission(self, user, model):
+        if self.can_create(user, model):
+            return
+        raise PermissionDenied()
