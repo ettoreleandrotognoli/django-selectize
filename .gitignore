@@ -7,4 +7,5 @@
 **.egg-info
 /dist/
 /venv/
+/htmlcov/
 **.sqlite*
