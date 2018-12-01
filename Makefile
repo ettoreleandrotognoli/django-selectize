@@ -1,5 +1,5 @@
-PYTHON=venv/bin/python
-COVERAGE=venv/bin/coverage
+PYTHON?=venv/bin/python
+COVERAGE?=venv/bin/coverage
 
 build:
 	npm run build
