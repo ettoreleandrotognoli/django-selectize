@@ -10,3 +10,4 @@
 /venv/
 /htmlcov/
 **.sqlite*
+coverage.xml
