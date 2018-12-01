@@ -7,6 +7,6 @@ build:
 
 coverage:
 	PYTHONPATH=src/python ${COVERAGE} run -m unittest discover test/python/
-	PYTHONPATH=src/python ${COVERAGE} run examples/python/selectize-demo/manage.py test
+	PYTHONPATH=src/python ${COVERAGE} run examples/python/selectize-demo/manage.py test examples/python/selectize-demo/
 	coverage report --include=src/python/*,examples/python/*
 	coverage html --include=src/python/*,examples/python/*
