@@ -1,3 +1,5 @@
+import time
+
 from django.apps import apps
 from django.conf import settings
 from django.contrib.auth.models import Permission
@@ -7,6 +9,7 @@ from django.test import Client
 from django.test import TestCase
 from django.utils.functional import lazy
 from selenium.webdriver.chrome.webdriver import WebDriver
+#from selenium.webdriver.firefox.webdriver import WebDriver
 
 from demo.models import Question
 
@@ -20,7 +23,17 @@ class SeleniumTest(StaticLiveServerTestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.client = WebDriver()
-        cls.client.implicity_wait(10)
+        cls.client.implicitly_wait(10)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.client.close()
+
+    def to_url(self, path):
+        return '{}{}'.format(self.live_server_url, path)
+
+    def resolve_url(self, view_name, *args, **kwargs):
+        return self.to_url(resolve_url(view_name, *args, **kwargs))
 
 
 class ClientMixin(object):
@@ -52,10 +65,14 @@ class QuestionEmptySelectizeViewTest(TestCase, ClientMixin):
     def test_list(self):
         response = self.client.get(self.list_url)
         self.assertEqual(response.status_code, 200)
+        result = response.json()
+        self.assertEqual(len(result), 0)
 
     def test_search(self):
         response = self.client.get(self.list_url, data=dict(q="term"))
         self.assertEqual(response.status_code, 200)
+        result = response.json()
+        self.assertEqual(len(result), 0)
 
     def test_insert_without_permission(self):
         question_text = "new question"
@@ -79,8 +96,41 @@ class QuestionEmptySelectizeViewTest(TestCase, ClientMixin):
 
 
 class QuestionSelectizeViewTest(TestCase, ClientMixin):
-    pass
+    list_url = lazy_resolve_url('selectize:selectize-demo-question')
+    fixtures = ['data']
+
+    def test_list(self):
+        response = self.client.get(self.list_url)
+        self.assertEqual(response.status_code, 200)
+        result = response.json()
+        self.assertEqual(len(result), 2)
+
+    def test_search_empty(self):
+        response = self.client.get(self.list_url, data=dict(q="term"))
+        self.assertEqual(response.status_code, 200)
+        result = response.json()
+        self.assertEqual(len(result), 0)
+
+    def test_search_all(self):
+        response = self.client.get(self.list_url, data=dict(q="favorite"))
+        self.assertEqual(response.status_code, 200)
+        result = response.json()
+        self.assertEqual(len(result), 2)
+
+    def test_search_half(self):
+        response = self.client.get(self.list_url, data=dict(q="language"))
+        self.assertEqual(response.status_code, 200)
+        result = response.json()
+        self.assertEqual(len(result), 1)
 
 
 class TestPollSelectizeView(TestCase):
     pass
+
+
+class PreviewTest(SeleniumTest):
+
+    def test_preview(self):
+        preview_url = self.to_url('/selectize-preview/')
+        self.client.get(preview_url)
+        time.sleep(10)

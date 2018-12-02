@@ -11,3 +11,4 @@
 /htmlcov/
 **.sqlite*
 coverage.xml
+**.log

@@ -1,0 +1,90 @@
+[
+{
+    "model": "demo.question",
+    "pk": 1,
+    "fields": {
+        "text": "What is your favorite python?",
+        "pub_date": "2018-12-02T13:19:47.354Z"
+    }
+},
+{
+    "model": "demo.question",
+    "pk": 2,
+    "fields": {
+        "text": "What is your favorite language?",
+        "pub_date": "2018-12-02T13:26:17.040Z"
+    }
+},
+{
+    "model": "demo.choice",
+    "pk": 1,
+    "fields": {
+        "question": 1,
+        "text": "Python2.7",
+        "votes": 0
+    }
+},
+{
+    "model": "demo.choice",
+    "pk": 2,
+    "fields": {
+        "question": 1,
+        "text": "Python3.6",
+        "votes": 0
+    }
+},
+{
+    "model": "demo.choice",
+    "pk": 3,
+    "fields": {
+        "question": 1,
+        "text": "Python3.7",
+        "votes": 0
+    }
+},
+{
+    "model": "demo.choice",
+    "pk": 4,
+    "fields": {
+        "question": 2,
+        "text": "python",
+        "votes": 0
+    }
+},
+{
+    "model": "demo.choice",
+    "pk": 5,
+    "fields": {
+        "question": 2,
+        "text": "java",
+        "votes": 0
+    }
+},
+{
+    "model": "demo.choice",
+    "pk": 6,
+    "fields": {
+        "question": 2,
+        "text": "c",
+        "votes": 0
+    }
+},
+{
+    "model": "demo.choice",
+    "pk": 7,
+    "fields": {
+        "question": 2,
+        "text": "c++",
+        "votes": 0
+    }
+},
+{
+    "model": "demo.choice",
+    "pk": 8,
+    "fields": {
+        "question": 2,
+        "text": "kotlin",
+        "votes": 0
+    }
+}
+]
