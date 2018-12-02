@@ -18,13 +18,15 @@ class Question(models.Model):
         auto_now_add=True
     )
 
+    def __str__(self):
+        return self.text
+
 
 @Selectize(
     DjangoTemplateStrategy("choice"),
     SearchFieldsStrategy(["text", "question__text"])
 )
 class Choice(models.Model):
-
     question = models.ForeignKey(
         Question,
         on_delete=models.CASCADE
@@ -35,3 +37,6 @@ class Choice(models.Model):
     votes = models.IntegerField(
         default=0
     )
+
+    def __str__(self):
+        return self.text

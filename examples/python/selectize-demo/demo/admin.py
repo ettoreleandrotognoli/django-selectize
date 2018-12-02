@@ -1,8 +1,13 @@
 from django import forms
 from django.contrib import admin
-from selectize.widgets import RemoteSelectize
+
 from .models import Choice
 from .models import Question
+
+
+class InlineChoice(admin.TabularInline):
+    model = Choice
+    extra = 1
 
 
 class SelectizeAdminMixin(object):
@@ -24,6 +29,9 @@ class QuestionAdminForm(forms.ModelForm):
 @admin.register(Question)
 class QuestionAdmin(SelectizeAdminMixin, admin.ModelAdmin):
     form = QuestionAdminForm
+    inlines = [
+        InlineChoice
+    ]
 
 
 class ChoiceAdminForm(forms.ModelForm):
@@ -31,10 +39,19 @@ class ChoiceAdminForm(forms.ModelForm):
         model = Choice
         fields = '__all__'
         widgets = {
-            'question': RemoteSelectize.make_from_model(Question)
+
         }
 
 
 @admin.register(Choice)
 class ChoiceAdmin(SelectizeAdminMixin, admin.ModelAdmin):
     form = ChoiceAdminForm
+    list_filter = (
+        'question',
+    )
+    list_display_links = ('text',)
+    list_display = (
+        'question',
+        'text',
+        'votes',
+    )
