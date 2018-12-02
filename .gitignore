@@ -4,7 +4,10 @@
 .*
 !.gitignore
 !.nycrc
+!.travis.yml
 **.egg-info
 /dist/
 /venv/
+/htmlcov/
 **.sqlite*
+coverage.xml

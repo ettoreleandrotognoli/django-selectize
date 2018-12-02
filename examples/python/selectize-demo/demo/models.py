@@ -1,4 +1,5 @@
 from django.db import models
+
 from selectize.models import Selectize
 from selectize.strategies.render import DjangoTemplateStrategy
 from selectize.strategies.search import SearchFieldsStrategy
@@ -23,6 +24,7 @@ class Question(models.Model):
     SearchFieldsStrategy(["text", "question__text"])
 )
 class Choice(models.Model):
+
     question = models.ForeignKey(
         Question,
         on_delete=models.CASCADE
